@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tic Tac Toe Game</title>
+
+<style>
+
+body{
+font-family:Arial;
+text-align:center;
+background:linear-gradient(to right,#1e3c72,#2a5298);
+color:white;
+}
+
+h1{
+margin-top:20px;
+}
+
+.board{
+display:grid;
+grid-template-columns:repeat(3,100px);
+grid-gap:10px;
+justify-content:center;
+margin-top:30px;
+}
+
+.cell{
+width:100px;
+height:100px;
+background:white;
+color:black;
+font-size:40px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+border-radius:10px;
+}
+
+.cell:hover{
+background:#ddd;
+}
+
+button{
+margin-top:20px;
+padding:10px 20px;
+font-size:16px;
+border:none;
+border-radius:5px;
+cursor:pointer;
+background:red;
+color:white;
+}
+
+#status{
+margin-top:20px;
+font-size:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Tic Tac Toe Game</h1>
+
+<div class="board">
+
+<div class="cell" onclick="play(this,0)"></div>
+<div class="cell" onclick="play(this,1)"></div>
+<div class="cell" onclick="play(this,2)"></div>
+
+<div class="cell" onclick="play(this,3)"></div>
+<div class="cell" onclick="play(this,4)"></div>
+<div class="cell" onclick="play(this,5)"></div>
+
+<div class="cell" onclick="play(this,6)"></div>
+<div class="cell" onclick="play(this,7)"></div>
+<div class="cell" onclick="play(this,8)"></div>
+
+</div>
+
+<div id="status">Player X Turn</div>
+
+<button onclick="restart()">Restart Game</button>
+
+<script>
+
+let board = ["","","","","","","","",""];
+let currentPlayer = "X";
+let gameActive = true;
+
+let winPatterns = [
+[0,1,2],
+[3,4,5],
+[6,7,8],
+[0,3,6],
+[1,4,7],
+[2,5,8],
+[0,4,8],
+[2,4,6]
+];
+
+function play(cell,index){
+
+if(board[index] !== "" || !gameActive){
+return;
+}
+
+board[index] = currentPlayer;
+cell.innerText = currentPlayer;
+
+checkWinner();
+
+if(gameActive){
+currentPlayer = currentPlayer === "X" ? "O" : "X";
+document.getElementById("status").innerText = "Player " + currentPlayer + " Turn";
+}
+
+}
+
+function checkWinner(){
+
+for(let pattern of winPatterns){
+
+let a = pattern[0];
+let b = pattern[1];
+let c = pattern[2];
+
+if(board[a] && board[a] === board[b] && board[a] === board[c]){
+
+document.getElementById("status").innerText = "Player " + currentPlayer + " Wins!";
+gameActive = false;
+return;
+
+}
+
+}
+
+if(!board.includes("")){
+document.getElementById("status").innerText = "Game Draw!";
+gameActive = false;
+}
+
+}
+
+function restart(){
+
+board = ["","","","","","","","",""];
+currentPlayer = "X";
+gameActive = true;
+
+document.getElementById("status").innerText = "Player X Turn";
+
+let cells = document.querySelectorAll(".cell");
+
+cells.forEach(cell => cell.innerText = "");
+
+}
+
+</script>
+
+</body>
+</html>
